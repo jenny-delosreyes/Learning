@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>US State Capitals Flashcards</title>
+    <meta
+      name="description"
+      content="Flashcards and quiz to learn US state capitals."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">★</div>
+        <div>
+          <div class="title">State Capitals</div>
+          <div class="subtitle">Flashcards + quiz (50 states)</div>
+        </div>
+      </div>
+
+      <nav class="tabs" aria-label="Mode">
+        <button class="tab is-active" type="button" data-tab="study">
+          Flashcards
+        </button>
+        <button class="tab" type="button" data-tab="quiz">Quiz</button>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="panel">
+        <h2 class="sr-only">Settings</h2>
+
+        <div class="settings">
+          <label class="field">
+            <span class="label">Direction</span>
+            <select id="direction">
+              <option value="state-to-capital">State → Capital</option>
+              <option value="capital-to-state">Capital → State</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="label">Cards</span>
+            <select id="filter">
+              <option value="all">All</option>
+              <option value="weak">Weak</option>
+              <option value="new">New</option>
+              <option value="mastered">Mastered</option>
+            </select>
+          </label>
+
+          <label class="toggle">
+            <input id="shuffle" type="checkbox" />
+            <span>Shuffle</span>
+          </label>
+
+          <label class="toggle">
+            <input id="readAloud" type="checkbox" />
+            <span>Read aloud</span>
+          </label>
+
+          <div class="actions">
+            <button id="resetProgress" class="btn btn-ghost" type="button">
+              Reset progress
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="studyView" class="view is-active" aria-label="Flashcards view">
+        <div class="cardShell">
+          <div class="cardMeta">
+            <div class="pill" id="counterPill">Card 1 / 50</div>
+            <div class="pill" id="masteryPill">Mastery: New</div>
+          </div>
+
+          <button id="flashcard" class="card" type="button">
+            <div class="cardFace">
+              <div class="cardLabel" id="promptLabel">State</div>
+              <div class="cardMain" id="promptText">Alabama</div>
+              <div class="cardHint" id="hintText">Tap to reveal</div>
+            </div>
+            <div class="cardFace cardBack" aria-hidden="true">
+              <div class="cardLabel" id="answerLabel">Capital</div>
+              <div class="cardMain" id="answerText">Montgomery</div>
+              <div class="cardHint">Tap to flip back</div>
+            </div>
+          </button>
+
+          <div class="studyControls">
+            <button id="prevBtn" class="btn btn-ghost" type="button">
+              ← Prev
+            </button>
+            <button id="flipBtn" class="btn" type="button">Flip</button>
+            <button id="nextBtn" class="btn btn-ghost" type="button">
+              Next →
+            </button>
+          </div>
+
+          <div class="grading">
+            <button id="missedBtn" class="btn btn-danger" type="button">
+              I missed it
+            </button>
+            <button id="knewBtn" class="btn btn-success" type="button">
+              I knew it
+            </button>
+          </div>
+
+          <div class="tip" id="studyTip">
+            Tip: Use <kbd>Space</kbd> to flip. Use <kbd>←</kbd>/<kbd>→</kbd> to
+            move. In quiz: <kbd>1</kbd>-<kbd>4</kbd>.
+          </div>
+        </div>
+      </section>
+
+      <section id="quizView" class="view" aria-label="Quiz view">
+        <div class="quizShell">
+          <div class="quizTop">
+            <div class="pill" id="quizCounterPill">Question 1 / 10</div>
+            <div class="pill" id="quizScorePill">Score: 0</div>
+          </div>
+
+          <div class="quizCard" role="group" aria-labelledby="quizQuestion">
+            <div class="quizQuestionLabel" id="quizQuestionLabel">Question</div>
+            <div class="quizQuestion" id="quizQuestion">
+              What is the capital of Alabama?
+            </div>
+
+            <div class="quizChoices" id="quizChoices"></div>
+
+            <div
+              class="quizFeedback"
+              id="quizFeedback"
+              aria-live="polite"
+            ></div>
+
+            <div class="quizControls">
+              <button id="quizNextBtn" class="btn" type="button">
+                Next question
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="sr-only">Progress</h2>
+        <div class="stats">
+          <div class="stat">
+            <div class="statNum" id="statSeen">0</div>
+            <div class="statLabel">Seen</div>
+          </div>
+          <div class="stat">
+            <div class="statNum" id="statCorrect">0</div>
+            <div class="statLabel">Correct</div>
+          </div>
+          <div class="stat">
+            <div class="statNum" id="statStreak">0</div>
+            <div class="statLabel">Streak</div>
+          </div>
+          <div class="stat">
+            <div class="statNum" id="statMastered">0</div>
+            <div class="statLabel">Mastered</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>
+        Made for practice. Progress is saved only on this device/browser.
+      </div>
+    </footer>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
+
