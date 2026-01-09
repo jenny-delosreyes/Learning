@@ -1,4 +1,11 @@
-import { STATES } from "./states.js";
+const STATES = window.STATES;
+if (!Array.isArray(STATES) || STATES.length === 0) {
+  // This should never happen if `states-data.js` loaded, but failing silently
+  // makes the UI look "broken" (e.g. flip won’t work).
+  throw new Error(
+    "State dataset not found. Make sure states-data.js is loaded before app.js.",
+  );
+}
 
 const STORAGE_KEY = "state-capitals.flashcards.v1";
 
