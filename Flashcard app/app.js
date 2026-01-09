@@ -1,13 +1,36 @@
 const STATES = window.STATES;
 if (!Array.isArray(STATES) || STATES.length === 0) {
-  // This should never happen if `states-data.js` loaded, but failing silently
-  // makes the UI look "broken" (e.g. flip won’t work).
-  throw new Error(
-    "State dataset not found. Make sure states-data.js is loaded before app.js.",
-  );
+  // If scripts fail to load (blocked, moved, etc.) this makes the UI look
+  // "unclickable" because none of the handlers can attach. Show a clear error.
+  document.body.innerHTML =
+    '<div style="max-width:780px;margin:32px auto;padding:18px;border:1px solid rgba(255,255,255,.18);border-radius:16px;background:rgba(0,0,0,.2);color:rgba(255,255,255,.92);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;">' +
+    "<h2 style=\"margin:0 0 10px 0;\">App failed to start</h2>" +
+    "<p style=\"margin:0;line-height:1.45;\">The state dataset didn’t load. Please make sure <code>states-data.js</code> is next to <code>index.html</code>, then refresh.</p>" +
+    "</div>";
+  throw new Error("State dataset not found (window.STATES missing).");
 }
 
 const STORAGE_KEY = "state-capitals.flashcards.v1";
+
+function getStorage() {
+  // Some browsers block localStorage on file:// or in strict privacy modes.
+  // If localStorage throws, fall back to an in-memory store so the app remains usable.
+  try {
+    const testKey = "__storage_test__";
+    window.localStorage.setItem(testKey, "1");
+    window.localStorage.removeItem(testKey);
+    return window.localStorage;
+  } catch {
+    const mem = new Map();
+    return {
+      getItem: (k) => (mem.has(k) ? mem.get(k) : null),
+      setItem: (k, v) => mem.set(k, String(v)),
+      removeItem: (k) => mem.delete(k),
+    };
+  }
+}
+
+const storage = getStorage();
 
 function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n));
@@ -58,7 +81,7 @@ function buildDefaultProgress() {
 }
 
 function loadProgress() {
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = storage.getItem(STORAGE_KEY);
   const parsed = safeJsonParse(raw ?? "", null);
   const base = buildDefaultProgress();
 
@@ -88,7 +111,7 @@ function loadProgress() {
 }
 
 function saveProgress(progress) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  storage.setItem(STORAGE_KEY, JSON.stringify(progress));
 }
 
 function masteryLabel(score, seen) {
@@ -465,7 +488,7 @@ resetProgressEl.addEventListener("click", () => {
     "Reset all progress on this device? (This cannot be undone.)",
   );
   if (!ok) return;
-  localStorage.removeItem(STORAGE_KEY);
+  storage.removeItem(STORAGE_KEY);
   progress = loadProgress();
   refreshDeck(false);
   updateStatsUI();

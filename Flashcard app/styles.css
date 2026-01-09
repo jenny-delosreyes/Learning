@@ -278,6 +278,7 @@ select:focus {
   backface-visibility: hidden;
   transform-style: preserve-3d;
   transition: transform 250ms ease;
+  pointer-events: none;
 }
 
 .cardBack {
@@ -318,10 +319,18 @@ select:focus {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
+  position: relative;
+  z-index: 2;
 }
 
 .grading {
   grid-template-columns: 1fr 1fr;
+}
+
+.cardMeta,
+.tip {
+  position: relative;
+  z-index: 2;
 }
 
 kbd {
